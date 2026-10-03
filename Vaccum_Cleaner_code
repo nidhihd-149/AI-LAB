@@ -1,0 +1,48 @@
+class VacuumCleanerAgent:
+    def __init__(self):
+        self.location = "A"
+
+    def perceive_and_act(self, room_status):
+        """
+        room_status: dictionary such as {"A": "Dirty", "B": "Clean"}
+        """
+
+        if room_status[self.location] == "Dirty":
+            action = "Suck"
+            room_status[self.location] = "Clean"
+
+        elif self.location == "A":
+            action = "Move Right"
+            self.location = "B"
+
+        else:
+            action = "Move Left"
+            self.location = "A"
+
+        return action
+
+
+# Environment
+rooms = {
+    "A": "Dirty",
+    "B": "Dirty"
+}
+
+agent = VacuumCleanerAgent()
+
+print("Initial room status:", rooms)
+print("Initial location:", agent.location)
+
+# Run the agent
+for i in range(6):
+    action = agent.perceive_and_act(rooms)
+
+    print(f"\nStep {i + 1}")
+    print("Action:", action)
+    print("Location:", agent.location)
+    print("Room status:", rooms)
+
+    # Stop when all rooms are clean
+    if all(status == "Clean" for status in rooms.values()):
+        print("\nAll rooms are clean!")
+        break
